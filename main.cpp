@@ -11,7 +11,9 @@ struct station{
     pthread_mutex_t load_train;
 };
 
-// Initilization of station
+/**
+* Initilization of station
+*/
 void station_init(struct station *station)
 {
 	station.waiting_passengers = 0;
@@ -37,6 +39,7 @@ void station_load_train(struct station *station, int count){
         station_on_board(station);
     }while( count > 0 && station.waiting_passengers > 0 );
 
+    /*No passengers left or No seats left*/
 }
 
 /**
