@@ -41,10 +41,9 @@ void station_load_train(struct station *station, int count){
         return;
 
     // There are available seats and there are waiting passengers
-    pthread_mutex_unlock(&(station->train_lock)); // lock to
     do{
+        pthread_mutex_unlock(&(station->train_lock)); // unlock the waiting passenger
         count--;
-        station_on_board(station);
     }while( count > 0 && station->waiting_passengers > 0 );
 
     /*No passengers left or No seats left*/
@@ -57,6 +56,9 @@ void station_wait_for_train(struct station *station){
     pthread_mutex_lock(&(station->passenger_lock));
     station->waiting_passengers++;
     pthread_mutex_unlock(&(station->passenger_lock));
+
+    pthread_mutex_lock(&(station->train_lock));
+    station_on_board(station);
 }
 
 /**
